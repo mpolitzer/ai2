@@ -1,7 +1,7 @@
 
 % ------------------------- %
 
-:- dynamic contador/2, direcao_corrente/1, posicao_corrente/1.
+:- dynamic contador/2, direcao_corrente/1, posicao/2, parede/2.
 
 % ------------------------- %
 
@@ -20,16 +20,17 @@ fora_do_mapa(X,Y) :-
 
 % ------------------------- %
 
-posicao_inicial(3,3).
-posicao_final(18,17).
+posicao(corrente, coord(3,3)). % posicao inicial
+posicao(final, coord(18,17)).
 
-posicao_corrente(3,3).
+% posicao(hospital, coord(<X>,<Y>))
+% posicao(delegacia, coord(<X>,<Y>))
 
 % ------------------------- %
 
 contador(hospitais, 4).
 contador(delegacias, 4).
-contador(municaos, 30).
+contador(municoes, 30).
 contador(antidotos, 1).
 contador(pontos, 0).
 contador(mordidas, 0).
@@ -104,10 +105,10 @@ apontar_para(Direcao) :-
 
 posicao_frente(X,Y) :-
 	direcao_corrente(Direcao),
-	vetor_direcao(Direcao, vetor(dX, dY)),
-	posicao_corrente(VelhoX,VelhoY),
-	X is VelhoX+dX,
-	Y is VelhoY+dY.
+	vetor_direcao(Direcao, vetor(DX, DY)),
+	posicao(corrente, coord(VelhoX,VelhoY)),
+	X is VelhoX+DX,
+	Y is VelhoY+DY.
 
 pode_andar(X,Y) :-
 	posicao_frente(X,Y),
@@ -118,13 +119,9 @@ pode_andar(X,Y) :-
 
 acao_andar :- 
 	pode_andar(X,Y),
-	retract(posicao_corrente(_,_)),
-	assert(posicao_corrente(X,Y)),
+	retract(posicao(corrente,_)),
+	assert(posicao(corrente, coord(X,Y))),
 	atualiza_pontos(andar).
-
-% ------------------------- %
-
-
 
 % ------------------------- %
 
