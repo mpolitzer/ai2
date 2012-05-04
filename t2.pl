@@ -5,10 +5,25 @@
 
 % ------------------------- %
 
-posicao_inicial(ponto(3,3)).
-posicao_final(ponto(18,17)).
+tamanho_mapa(20,20).
 
-posicao_corrente(ponto(3,3)).
+fora_do_mapa(X,Y) :-
+	X < 0;
+	Y < 0;
+	(
+		tamanho_mapa(Xmax, Ymax),
+		(
+			X >= Xmax;
+			Y >= Ymax
+		)
+	).
+
+% ------------------------- %
+
+posicao_inicial(3,3).
+posicao_final(18,17).
+
+posicao_corrente(3,3).
 
 % ------------------------- %
 
@@ -87,13 +102,24 @@ apontar_para(Direcao) :-
 
 % ------------------------- %
 
-acao_andar :- 
+posicao_frente(X,Y) :-
 	direcao_corrente(Direcao),
 	vetor_direcao(Direcao, vetor(dX, dY)),
-	retract(posicao_corrente(ponto(X,Y))),
-	NovoX is X+dX,
-	NovoY is Y+dY,
-	assert(posicao_corrente(ponto(NovoX, NovoY))),
+	posicao_corrente(VelhoX,VelhoY),
+	X is VelhoX+dX,
+	Y is VelhoY+dY.
+
+pode_andar(X,Y) :-
+	posicao_frente(X,Y),
+	not(
+		parede(X,Y);
+		fora_do_mapa(X,Y)
+	).
+
+acao_andar :- 
+	pode_andar(X,Y),
+	retract(posicao_corrente(_,_)),
+	assert(posicao_corrente(X,Y)),
 	atualiza_pontos(andar).
 
 % ------------------------- %
