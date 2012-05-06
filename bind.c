@@ -38,23 +38,33 @@ static foreign_t sense_hit(void);
 
 static foreign_t consult_antidotes(term_t t0)
 {
-	if (!PL_unify_integer(t0, player.antidotes)) return FALSE;
-	return TRUE;
+	if (!PL_is_variable(t0))
+		return FALSE;
+
+	return PL_unify_integer(t0, player.antidotes);
 }
 
 static foreign_t consult_ammo(term_t t0)
 {
-	if (!PL_unify_integer(t0, player.ammo)) return FALSE;
-	return TRUE;
+	if (!PL_is_variable(t0))
+		return FALSE;
+
+	return PL_unify_integer(t0, player.ammo);
 }
 
 static foreign_t consult_bites(term_t t0)
 {
-	PL_unify_integer(t0, player.bites);
+	if (!PL_is_variable(t0))
+		return FALSE;
+
+	return PL_unify_integer(t0, player.bites);
 }
 
 static foreign_t consult_position(term_t X, term_t Y)
 {
+	if (!PL_is_variable(X) || !PL_is_variable(Y))
+		return FALSE;
+
 	if (!PL_unify_integer(X, player.x)) return FALSE;
 	if (!PL_unify_integer(Y, player.y)) return FALSE;
 	return TRUE;
@@ -62,11 +72,16 @@ static foreign_t consult_position(term_t X, term_t Y)
 
 static foreign_t consult_direction(term_t Dir)
 {
-	char s[2] = "?";		/* terminate with NULL. */
-	s[0] = player.direction;
-	
-	PL_unify_atom_chars(Dir, s);
-	return TRUE;
+	char *atom;
+	char s[2] = { player.direction, '\0' };
+
+	if (PL_is_variable(Dir))
+		return PL_unify_atom_chars(Dir, s);
+
+	PL_get_atom_chars(Dir, &atom);
+	if (atom[0] == player.direction)
+		return TRUE;
+	return FALSE;
 }
 
 static foreign_t consult_goal(term_t X, term_t Y)
@@ -76,6 +91,19 @@ static foreign_t consult_goal(term_t X, term_t Y)
 	return TRUE;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                ACTION                                      */
+/* -------------------------------------------------------------------------- */
+
+static foreign_t action_move_forward(void);
+static foreign_t action_turn_right(void);
+static foreign_t action_grab(void);
+static foreign_t action_shoot(void);
+static foreign_t action_turn_chopper_on(void);
+
+/* -------------------------------------------------------------------------- */
+/*                                 BIND                                       */
+/* -------------------------------------------------------------------------- */
 
 void register_binds(void)
 {
