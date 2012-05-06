@@ -23,9 +23,6 @@ fora_do_mapa(X,Y) :-
 posicao(corrente, coord(3,3)). % posicao inicial
 posicao(final, coord(18,17)).
 
-% posicao(hospital, coord(<X>,<Y>))
-% posicao(delegacia, coord(<X>,<Y>))
-
 % ------------------------- %
 
 contador(hospitais, 4).
