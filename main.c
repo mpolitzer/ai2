@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 	FILE *f = fopen("in.txt", "r");
 	game_init();
 	game_read(f);
-	game_dump();
 
 	register_binds();
 
@@ -27,6 +26,7 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
+	game_dump();
 	PL_halt(PL_toplevel() ? 0 : 1);
 	return 0;
 }
