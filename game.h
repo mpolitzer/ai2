@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
@@ -37,9 +38,21 @@ struct game_info {
 	int num_stations;
 	int num_zombies;
 	char map[MAPH][MAPW];
+	int goal_x, goal_y;
+};
+
+struct player {
+	int x, y;
+	int antidotes;
+	char direction; /* n, e, s, w */
+	int ammo;
+
+	int bites;
+	int points;
 };
 
 extern struct game_info GI;
+extern struct player player;
 
 void game_read(FILE *file);
 void game_dump(void);

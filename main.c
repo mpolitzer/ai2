@@ -5,16 +5,21 @@
 #include <SWI-Prolog.h>
 
 #include "game.h"
+#include "bind.h"
 
 int main(int argc, char *argv[])
 {
-	game_read(stdin);
+	FILE *f = fopen("in.txt", "r");
+	game_read(f);
 	game_dump();
+
+	register_binds();
 
 	if (!PL_initialise(argc, argv)) {
 		fprintf(stderr, "failed to initialize prolog\n");
 		exit(1);
 	}
 
+	PL_halt(PL_toplevel() ? 0 : 1);
 	return 0;
 }

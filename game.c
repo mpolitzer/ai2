@@ -3,6 +3,7 @@
 #include "game.h"
 
 struct game_info GI;
+struct player player;
 
 void putcolor(char c, int fg, int bg)
 {
