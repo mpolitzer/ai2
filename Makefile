@@ -3,8 +3,8 @@ CC=gcc
 CFLAGS=-Wall -O0 -funroll-loops -c -g -Wno-unused-function
 LDFLAGS=-O2
 LDLIBS=-lm
-SOURCES=main.c
-HEADERS=
+SOURCES=main.c game.c
+HEADERS=game.h
 
 CFLAGS+=`pkg-config swipl --cflags`
 LDLIBS+=`pkg-config swipl --libs`
