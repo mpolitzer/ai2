@@ -16,6 +16,7 @@
 int main(int argc, char *argv[])
 {
 	FILE *f = fopen("in.txt", "r");
+	game_init();
 	game_read(f);
 	game_dump();
 

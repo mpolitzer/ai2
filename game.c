@@ -18,8 +18,8 @@ void game_read(FILE *file)
 	while (fscanf(file, " %c:%d,%d,%d", &c, &x, &y, &z) == 4) {
 		switch (c) {
 			case 'H': case 'h':
-				GI.hospitals[GI.num_hospitals].x = x;
-				GI.hospitals[GI.num_hospitals].y = y;
+				GI.hospitals[GI.num_hospitals].x = x-1;
+				GI.hospitals[GI.num_hospitals].y = y-1;
 				GI.hospitals[GI.num_hospitals].antidotes = z;
 
 				GI.resources_map[y][x].what = IS_HOSPITAL;
@@ -29,8 +29,8 @@ void game_read(FILE *file)
 				GI.num_hospitals++;
 				break;
 			case 'M': case 'm':
-				GI.stations[GI.num_stations].x = x;
-				GI.stations[GI.num_stations].y = y;
+				GI.stations[GI.num_stations].x = x-1;
+				GI.stations[GI.num_stations].y = y-1;
 				GI.stations[GI.num_stations].ammo = z;
 
 				GI.resources_map[y][x].what = IS_STATION;
@@ -40,8 +40,8 @@ void game_read(FILE *file)
 				GI.num_stations++;
 				break;
 			case 'Z': case 'z':
-				GI.zombies[GI.num_zombies].x = x;
-				GI.zombies[GI.num_zombies].y = y;
+				GI.zombies[GI.num_zombies].x = x-1;
+				GI.zombies[GI.num_zombies].y = y-1;
 				GI.zombies[GI.num_zombies].num = z;
 
 				GI.resources_map[y][x].what = IS_ZOMBIE;
@@ -122,4 +122,12 @@ void game_update_points(int action)
 	}
 	
 	player.points += points_vet[action] * factor;
+}
+
+void game_init(void)
+{
+	player.ammo = 30;
+	player.x = 3;
+	player.y = 3;
+	player.direction = DIR_E;
 }

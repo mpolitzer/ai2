@@ -94,6 +94,7 @@ enum {
 
 void game_update_points(int action);
 void game_read(FILE *file);
+void game_init(void);
 void game_dump(void);
 int game_check_border(int x, int y);
 

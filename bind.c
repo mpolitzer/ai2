@@ -321,10 +321,14 @@ static foreign_t action_use_antidote(void)
 
 static foreign_t action_turn_chopper_on(void)
 {
+	if(GI.goal_x != player.x || GI.goal_y != player.y)
+		return FALSE;
+
 	game_update_points(ACTION_TURN_CHOPPER_ON);
 	game_update_points(ACTION_FUCK_YEAH);
 
 	/* TODO: acaba a execucao */
+	return TRUE;
 }
 
 /* -------------------------------------------------------------------------- */
