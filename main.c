@@ -7,6 +7,12 @@
 #include "game.h"
 #include "bind.h"
 
+/*
+ * TODO:
+ * - matar o fela da puta na virada de turno
+ *
+ * */
+
 int main(int argc, char *argv[])
 {
 	FILE *f = fopen("in.txt", "r");

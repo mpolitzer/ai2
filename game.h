@@ -31,6 +31,7 @@ struct zombie {
 };
 
 struct resources_map {
+#define IS_NOTHING	0
 #define IS_HOSPITAL	1
 #define IS_STATION	2
 #define IS_ZOMBIE	3
@@ -50,16 +51,27 @@ struct game_info {
 	int num_hospitals;
 	int num_stations;
 	int num_zombies;
+
+#define MAP_WALL	'X'
+#define MAP_ROAD	'R'
 	char map[MAPH][MAPW];
 	struct resources_map resources_map[MAPH][MAPW];
 
 	int goal_x, goal_y;
+
+	int was_hit;
 };
 
 struct player {
 	int x, y;
 	int antidotes;
-	char direction; /* n, e, s, w */
+
+#define DIR_N	0
+#define DIR_E	1
+#define DIR_S	2
+#define DIR_W	3
+#define DIR_C	4
+	int direction; /* n, e, s, w, curr */
 	int ammo;
 
 	int bites;
@@ -69,6 +81,18 @@ struct player {
 extern struct game_info GI;
 extern struct player player;
 
+enum {
+	ACTION_WALK,
+	ACTION_TURN_RIGHT,
+	ACTION_GRAB,
+	ACTION_SHOOT,
+	ACTION_TURN_CHOPPER_ON,
+	ACTION_GET_BITTEN,
+	ACTION_KILL_ZOMBIE,
+	ACTION_FUCK_YEAH /* escape */
+};
+
+void game_update_points(int action);
 void game_read(FILE *file);
 void game_dump(void);
 int game_check_border(int x, int y);

@@ -60,7 +60,7 @@ void game_read(FILE *file)
 		fgets(buf, 255, file);
 
 		for (j=0; !isspace(buf[j]); j++) {
-			GI.map[i][j] = buf[j];
+			GI.map[i][j] = toupper(buf[j]);
 		}
 	}
 }
@@ -105,4 +105,21 @@ int game_check_border(int x, int y)
 	if (y >= MAPH) return 0;
 
 	return 1;
+}
+
+void game_update_points(int action)
+{
+	int points_vet[] = {-1, -1, -1, -10, -1, -100, 20, 200};
+	int factor = 0;
+
+	if(action == ACTION_FUCK_YEAH)
+	{
+		factor += player.antidotes;
+	}
+	else
+	{
+		factor += player.bites+1;
+	}
+	
+	player.points += points_vet[action] * factor;
 }
