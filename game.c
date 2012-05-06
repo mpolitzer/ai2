@@ -126,8 +126,11 @@ void game_update_points(int action)
 
 void game_init(void)
 {
-	player.ammo = 30;
+	GI.goal_x = 18;
+	GI.goal_y = 17;
 	player.x = 3;
 	player.y = 3;
+	player.ammo = 30;
+	player.antidotes = 1;
 	player.direction = DIR_E;
 }
