@@ -30,6 +30,19 @@ struct zombie {
 	int num;
 };
 
+struct resources_map {
+#define IS_HOSPITAL	1
+#define IS_STATION	2
+#define IS_ZOMBIE	3
+	int what;
+
+	union {
+		struct hospital *hospital;
+		struct station *station;
+		struct zombie *zombie;
+	};
+};
+
 struct game_info {
 	struct hospital hospitals[NUM_HOSPITALS];
 	struct station stations[NUM_STATIONS];
@@ -38,6 +51,8 @@ struct game_info {
 	int num_stations;
 	int num_zombies;
 	char map[MAPH][MAPW];
+	struct resources_map resources_map[MAPH][MAPW];
+
 	int goal_x, goal_y;
 };
 
@@ -56,5 +71,6 @@ extern struct player player;
 
 void game_read(FILE *file);
 void game_dump(void);
+int game_check_border(int x, int y);
 
 #endif /* GAME_H */

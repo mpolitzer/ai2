@@ -1,6 +1,6 @@
 CC=gcc
 
-CFLAGS=-Wall -O0 -funroll-loops -c -g -Wno-unused-function
+CFLAGS=-Wall -O0 -funroll-loops -c -g -Wno-unused-function -Wno-unused-result
 LDFLAGS=-O2
 LDLIBS=-lm
 SOURCES=main.c game.c bind.c

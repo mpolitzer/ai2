@@ -21,18 +21,33 @@ void game_read(FILE *file)
 				GI.hospitals[GI.num_hospitals].x = x;
 				GI.hospitals[GI.num_hospitals].y = y;
 				GI.hospitals[GI.num_hospitals].antidotes = z;
+
+				GI.resources_map[y][x].what = IS_HOSPITAL;
+				GI.resources_map[y][x].hospital =
+					&GI.hospitals[GI.num_hospitals];
+
 				GI.num_hospitals++;
 				break;
 			case 'M': case 'm':
 				GI.stations[GI.num_stations].x = x;
 				GI.stations[GI.num_stations].y = y;
 				GI.stations[GI.num_stations].ammo = z;
+
+				GI.resources_map[y][x].what = IS_STATION;
+				GI.resources_map[y][x].station =
+					&GI.stations[GI.num_stations];
+
 				GI.num_stations++;
 				break;
 			case 'Z': case 'z':
 				GI.zombies[GI.num_zombies].x = x;
 				GI.zombies[GI.num_zombies].y = y;
 				GI.zombies[GI.num_zombies].num = z;
+
+				GI.resources_map[y][x].what = IS_ZOMBIE;
+				GI.resources_map[y][x].zombie =
+					&GI.zombies[GI.num_zombies];
+
 				GI.num_zombies++;
 				break;
 		}
@@ -82,4 +97,12 @@ void game_dump(void)
 	}
 }
 
+int game_check_border(int x, int y)
+{
+	if (x < 0) return 0;
+	if (y < 0) return 0;
+	if (x >= MAPW) return 0;
+	if (y >= MAPH) return 0;
 
+	return 1;
+}
