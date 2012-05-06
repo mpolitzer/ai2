@@ -12,8 +12,8 @@ test(action_move_forward) :- action_move_forward.
 test(sense_zombies_3) :- sense_zombies(N), assertion(N==3).
 test(sense_station_0,fail) :- sense_station.
 test(sense_hospital_1) :- sense_hospital.
-test(sense_antidote_0) :- sense_antidote(N), assertion(N==0).
-test(sense_ammo_0) :- sense_ammo(N), assertion(N==0).
+test(sense_antidote_0,fail) :- sense_antidote(N), assertion(N==0).
+test(sense_ammo_0,fail) :- sense_ammo(N), assertion(N==0).
 test(sense_hit_0,fail) :- sense_hit.
 
 test(action_turn_north) :- action_turn_right, action_turn_right, action_turn_right.
@@ -22,7 +22,7 @@ test(sense_hit_1) :- sense_hit.
 test(sense_zombies_2) :- sense_zombies(N), assertion(N==2).
 test(action_move_forward) :- action_move_forward.
 test(consult_bites_2) :- consult_bites(N), assertion(N==2).
-test(consult_ammo_29) :- consult_ammo(N), asssertion(N==29).
+test(consult_ammo_29) :- consult_ammo(N), assertion(N==29).
 test(action_use_antidote) :- action_use_antidote.
 test(consult_antidotes_0) :- consult_antidotes(N), assertion(N==0).
 test(consult_bites_0) :- consult_bites(N), assertion(N==0).
@@ -42,7 +42,7 @@ test(sense_ammo_2) :- sense_ammo(N), assertion(N==2).
 test(action_grab) :- action_grab.
 test(consult_ammo_31) :- consult_ammo(N), assertion(N==31).
 
-test(action_shoot) :- action_shoot.
+test(action_shoot,fail) :- action_shoot.
 test(sense_hit_0,fail) :- sense_hit.
 
 :- end_tests(test).

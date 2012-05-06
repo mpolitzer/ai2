@@ -175,8 +175,8 @@ static foreign_t consult_position(term_t X, term_t Y)
 	if (!PL_is_variable(X) || !PL_is_variable(Y))
 		return FALSE;
 
-	if (!PL_unify_integer(X, player.x)) return FALSE;
-	if (!PL_unify_integer(Y, player.y)) return FALSE;
+	if (!PL_unify_integer(X, player.x + 1)) return FALSE;
+	if (!PL_unify_integer(Y, player.y + 1)) return FALSE;
 	return TRUE;
 }
 
@@ -196,8 +196,8 @@ static foreign_t consult_direction(term_t Dir)
 
 static foreign_t consult_goal(term_t X, term_t Y)
 {
-	if (!PL_unify_integer(X, GI.goal_x)) return FALSE;
-	if (!PL_unify_integer(Y, GI.goal_y)) return FALSE;
+	if (!PL_unify_integer(X, GI.goal_x + 1)) return FALSE;
+	if (!PL_unify_integer(Y, GI.goal_y + 1)) return FALSE;
 	return TRUE;
 }
 
@@ -277,6 +277,7 @@ static foreign_t action_shoot(void)
 
 	if(player.ammo == 0)
 		return FALSE;
+	player.ammo--;
 
 	game_update_points(ACTION_SHOOT);
 	while(game_check_border(x, y))
