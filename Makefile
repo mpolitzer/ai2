@@ -3,11 +3,14 @@ CC=gcc
 CFLAGS=-Wall -O0 -funroll-loops -c -g -Wno-unused-function -Wno-unused-result
 LDFLAGS=-O2
 LDLIBS=-lm
-SOURCES=main.c game.c bind.c
+SOURCES=main.c game.c bind.c gfx.c
 HEADERS=game.h bind.h
 
-CFLAGS+=`pkg-config swipl --cflags`
-LDLIBS+=`pkg-config swipl --libs`
+PACKAGES="allegro-5.0 allegro_ttf-5.0 allegro_image-5.0 allegro_dialog-5.0 \
+ allegro_primitives-5.0 gl glu swipl"
+
+CFLAGS+=`pkg-config $(PACKAGES) --cflags`
+LDLIBS+=`pkg-config $(PACKAGES) --libs`
 
 OBJECTS=$(addsuffix .o, $(basename ${SOURCES}))
 EXECUTABLE=main

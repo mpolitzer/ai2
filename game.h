@@ -5,6 +5,9 @@
 #include <string.h>
 #include <ctype.h>
 
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
+
 #define NUM_HOSPITALS	4
 #define NUM_STATIONS	4
 #define NUM_ZOMBIES	60
@@ -60,6 +63,13 @@ struct game_info {
 	int goal_x, goal_y;
 
 	int was_hit;
+
+	ALLEGRO_DISPLAY *display;
+
+	ALLEGRO_TIMER *tick;
+	ALLEGRO_EVENT_QUEUE *evQ;
+
+
 };
 
 struct player {
@@ -97,5 +107,11 @@ void game_read(FILE *file);
 void game_init(void);
 void game_dump(void);
 int game_check_border(int x, int y);
+
+#define die(error, ...) _die(error, __FILE__, __LINE__, __VA_ARGS__)
+void _die(int error, char* filename, int line, const char* format, ...);
+
+void gfx_init(int w, int h, int fps);
+void gfx_step(int x, int y);
 
 #endif /* GAME_H */
