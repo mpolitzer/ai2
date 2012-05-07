@@ -25,6 +25,7 @@ static foreign_t consult_bites(term_t num);
 static foreign_t consult_position(term_t X,term_t Y);
 static foreign_t consult_direction(term_t Direction);
 static foreign_t consult_goal(term_t X,term_t Y);
+static foreign_t consult_points(term_t num);
 
 static foreign_t action_move_forward(void);
 static foreign_t action_turn_right(void);
@@ -201,6 +202,15 @@ static foreign_t consult_goal(term_t X, term_t Y)
 	return TRUE;
 }
 
+static foreign_t consult_points(term_t t0)
+{
+	if (!PL_is_variable(t0))
+		return FALSE;
+
+	return PL_unify_integer(t0, player.points);
+}
+
+
 /* -------------------------------------------------------------------------- */
 /*                                ACTION                                      */
 /* -------------------------------------------------------------------------- */
@@ -357,6 +367,7 @@ void register_binds(void)
 	PL_register_foreign("consult_position", 2, consult_position, 0);
 	PL_register_foreign("consult_direction", 1, consult_direction, 0);
 	PL_register_foreign("consult_goal", 2, consult_goal, 0);
+	PL_register_foreign("consult_points", 1, consult_points, 0);
 
 	PL_register_foreign("action_move_forward", 0, action_move_forward, 0);
 	PL_register_foreign("action_turn_right", 0, action_turn_right, 0);
