@@ -26,6 +26,12 @@ void _die(int error, char* filename, int line, const char* format, ...)
 	exit(error);
 }
 
+int call_strategy()
+{
+	predicate_t pred = PL_predicate("strategy", 0, NULL);
+
+	return PL_call_predicate(NULL, 0, pred, PL_new_term_ref());
+}
 
 int main(int argc, char *argv[])
 {
@@ -48,6 +54,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "failed to initialize prolog\n");
 		exit(1);
 	}
+
+	call_strategy();
 
 	gfx_step(player.x, player.y);
 	PL_halt(PL_toplevel() ? 0 : 1);
