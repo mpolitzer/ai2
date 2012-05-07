@@ -1,9 +1,8 @@
 #include "game.h"
 
 #define MOVE_FRAMES 10
-static int scale;
 
-static inline void gfx_render(int x, int y, int frame)
+static inline void gfx_render(int frame)
 {
 	int i;
 	int scale = 20;
@@ -23,6 +22,7 @@ static inline void gfx_render(int x, int y, int frame)
 			                         color);
 		}
 	}
+
 #if 0
 	/* prize */
 	for (i=0; i<G.gi.num_prizes; i++) {
@@ -40,8 +40,9 @@ static inline void gfx_render(int x, int y, int frame)
 	render_pos[0]=prev_pos[0]+(float)frame*(pos[0] - prev_pos[0])/MOVE_FRAMES;
 	render_pos[1]=prev_pos[1]+(float)frame*(pos[1] - prev_pos[1])/MOVE_FRAMES;
 #endif
-	render_pos[0] = x;
-	render_pos[1] = y;
+
+	render_pos[0] = player.x;
+	render_pos[1] = player.y;
 
 	/* player */
 	al_draw_filled_circle(scale * (render_pos[0]+0.5),
@@ -71,13 +72,13 @@ void gfx_init(int w, int h, int fps)
 	al_start_timer(GI.tick);
 }
 
-void gfx_step(int x, int y)
+void gfx_step(void)
 {
 	int i;
 	ALLEGRO_EVENT ev;
 
 	for (i = 0; i < MOVE_FRAMES; i++) {
-		gfx_render(x, y, i);
+		gfx_render(i);
 		do {
 			al_wait_for_event(GI.evQ, &ev);
 		} while (ev.type != ALLEGRO_EVENT_TIMER);

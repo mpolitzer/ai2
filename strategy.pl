@@ -1,3 +1,25 @@
+% TODO: Remove this HACK %
+
+%sense_zombies
+%sense_station
+%sense_hospital
+%sense_antidote
+%sense_ammo
+%sense_hit
+%                      
+%consult_antidotes
+%consult_ammo
+%consult_bites
+%consult_position
+%consult_direction
+%consult_goal
+                      
+f :- action_move_forward.
+l :- action_turn_right.
+g :- action_grab.
+s :- action_shoot.
+ua :- action_use_antidote.
+on :- action_turn_chopper_on.
 
 % ----------------------------------- %
 
@@ -56,6 +78,8 @@ init_sensors :-
 % ----------------------------------- %
 
 logic :-
+	load_position,
+	init_sensors,
 	true.
 
 % ----------------------------------- %

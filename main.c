@@ -56,8 +56,7 @@ int main(int argc, char *argv[])
 	}
 
 	call_strategy();
-
-	gfx_step(player.x, player.y);
+	gfx_step();
 	PL_halt(PL_toplevel() ? 0 : 1);
 	return 0;
 }

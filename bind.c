@@ -230,6 +230,7 @@ static foreign_t action_move_forward(void)
 		rm->what = IS_NOTHING;
 	}
 
+	gfx_step();
 	return TRUE;
 }
 
@@ -239,6 +240,7 @@ static foreign_t action_turn_right(void)
 
 	game_update_points(ACTION_TURN_RIGHT);
 
+	gfx_step();
 	return TRUE;
 }
 
@@ -252,6 +254,7 @@ static foreign_t action_grab(void)
 		rm->what = IS_NOTHING;
 
 		game_update_points(ACTION_GRAB);
+		gfx_step();
 		return TRUE;
 	}
 	
@@ -261,6 +264,7 @@ static foreign_t action_grab(void)
 		rm->what = IS_NOTHING;
 
 		game_update_points(ACTION_GRAB);
+		gfx_step();
 		return TRUE;
 	}
 	
@@ -298,6 +302,7 @@ static foreign_t action_shoot(void)
 			GI.was_hit = 1;
 	
 			game_update_points(ACTION_KILL_ZOMBIE);
+			gfx_step();
 			return TRUE;
 		}
 
@@ -315,6 +320,7 @@ static foreign_t action_use_antidote(void)
 		player.antidotes--;
 		player.bites = 0;
 
+		gfx_step();
 		return TRUE;
 	}
 	return FALSE;
