@@ -217,14 +217,14 @@ static foreign_t consult_points(term_t t0)
 
 static foreign_t action_move_forward(void)
 {
-	struct resources_map *rm;
 	int x = player.x + dir_vect[player.direction][0];
 	int y = player.y + dir_vect[player.direction][1];
+	struct resources_map *rm = &GI.resources_map[y][x];
 
 	if(!game_check_border(x, y))
 		return FALSE;
 
-	if(GI.map[y][x] == MAP_WALL)
+	if(GI.map[y][x] == MAP_WALL && rm->what == IS_NOTHING)
 		return FALSE;
 
 	player.x = x;
@@ -232,11 +232,11 @@ static foreign_t action_move_forward(void)
 
 	game_update_points(ACTION_WALK);
 
-       	rm = &GI.resources_map[y][x];
 	if(rm->what == IS_ZOMBIE)
 	{
 		game_update_points(ACTION_GET_BITTEN);
 		player.bites += rm->zombie->num;
+		rm->zombie->num = 0;
 		rm->what = IS_NOTHING;
 	}
 
@@ -261,6 +261,7 @@ static foreign_t action_grab(void)
 	if(rm->what == IS_HOSPITAL)
 	{
 		player.antidotes += rm->hospital->antidotes;
+		rm->hospital->antidotes=0;
 		rm->what = IS_NOTHING;
 
 		game_update_points(ACTION_GRAB);
@@ -271,6 +272,7 @@ static foreign_t action_grab(void)
 	if(rm->what == IS_STATION)
 	{
 		player.ammo += rm->station->ammo;
+		rm->station->ammo=0;
 		rm->what = IS_NOTHING;
 
 		game_update_points(ACTION_GRAB);
