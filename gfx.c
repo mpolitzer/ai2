@@ -9,7 +9,6 @@ static inline void gfx_render(int frame)
 {
 	int i;
 	int scale = 38;
-	float render_pos[2];
 
 	al_clear_to_color(al_map_rgb(0,0,0));
 	/* tiles */
@@ -30,7 +29,6 @@ static inline void gfx_render(int frame)
 	for (i=0; i<GI.num_hospitals; i++) {
 		float x = GI.hospitals[i].x + 0.5;
 		float y = GI.hospitals[i].y + 0.5;
-		ALLEGRO_COLOR color = al_map_rgb(255,   0,  0);	/* R  */
 
 		if (GI.hospitals[i].antidotes)
 			al_draw_scaled_bitmap(GI.medkit,
@@ -59,7 +57,6 @@ static inline void gfx_render(int frame)
 	for (i=0; i<GI.num_stations; i++) {
 		float x = GI.stations[i].x + 0.5;
 		float y = GI.stations[i].y + 0.5;
-		ALLEGRO_COLOR color = al_map_rgb(  0,  0,155);	/* B  */
 
 		if (GI.stations[i].ammo)
 			al_draw_scaled_bitmap(GI.ammo,
