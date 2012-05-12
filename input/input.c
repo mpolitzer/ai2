@@ -3,9 +3,7 @@
 #include <time.h>
 
 char mat[20][20];
-int zombies[20][20];
-int hospitals[20][20];
-int stations[20][20];
+int used[20][20];
 
 int has_neighbour_wall(int x, int y)
 {
@@ -48,9 +46,9 @@ int main(int argc, const char *argv[])
 			x = rand()%20;	
 			y = rand()%20;
 		}
-		while(mat[y][x] == 'X' || zombies[y][x]);
+		while(mat[y][x] == 'X' || used[y][x]);
 
-		zombies[y][x] = 1;
+		used[y][x] = 1;
 		j = rand()%10;
 		if(j) printf("Z:%d,%d,%d\n", x+1, y+1, j);
 	}
@@ -62,9 +60,9 @@ int main(int argc, const char *argv[])
 			x = rand()%20;	
 			y = rand()%20;
 		}
-		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y) || hospitals[y][x]);
+		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y) || used[y][x]);
 
-		hospitals[y][x] = 1;
+		used[y][x] = 1;
 		j = rand()%11;
 		if(j) printf("H:%d,%d,%d\n", x+1, y+1, j);
 	}
@@ -76,9 +74,9 @@ int main(int argc, const char *argv[])
 			x = rand()%20;	
 			y = rand()%20;
 		}
-		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y) || stations[y][x]);
+		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y) || used[y][x]);
 
-		stations[y][x] = 1;
+		used[y][x] = 1;
 		j = rand()%70+30;
 		printf("M:%d,%d,%d\n", x+1, y+1, j);
 	}
