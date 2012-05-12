@@ -13,9 +13,9 @@ static inline void gfx_render(int frame)
 	for (i=0; i<MAPH; i++) {
 		int j;
 		for (j=0; j<MAPW; j++) {
-			ALLEGRO_COLOR color = al_map_rgb( 50,   0,  0);	/* R  */
+			ALLEGRO_COLOR color = al_map_rgb( 80, 80, 80);	/* R  */
 			if (GI.map[j][i] == MAP_WALL)
-				color = al_map_rgb(  0,   0,  0);	/* X  */
+				color = al_map_rgb( 5, 5, 5);	/* X  */
 
 			al_draw_filled_rectangle(scale*i, scale*j,
 			                         scale*(i + 1), scale*(j + 1),
@@ -29,37 +29,40 @@ static inline void gfx_render(int frame)
 		float y = GI.hospitals[i].y + 0.5;
 		ALLEGRO_COLOR color = al_map_rgb(255,   0,  0);	/* R  */
 
-		al_draw_filled_rectangle(
-		                        scale*(x-0.5), scale*(y-0.5),
-		                        scale*(x+0.5), scale*(y+0.5),
-		                        color);
+		if (GI.hospitals[i].antidotes)
+			al_draw_filled_rectangle(
+					scale*(x-0.5), scale*(y-0.5),
+					scale*(x+0.5), scale*(y+0.5),
+					color);
 	}
 	for (i=0; i<GI.num_zombies; i++) {
 		float x = GI.zombies[i].x + 0.5;
 		float y = GI.zombies[i].y + 0.5;
 		ALLEGRO_COLOR color = al_map_rgb(  0,155,  0);	/* G  */
-
-		al_draw_filled_rectangle(
-		                        scale*(x-0.5), scale*(y-0.5),
-		                        scale*(x+0.5), scale*(y+0.5),
-		                        color);
+		
+		if (GI.zombies[i].num)
+			al_draw_filled_rectangle(
+					scale*(x-0.5), scale*(y-0.5),
+					scale*(x+0.5), scale*(y+0.5),
+					color);
 	}
 	for (i=0; i<GI.num_stations; i++) {
 		float x = GI.stations[i].x + 0.5;
 		float y = GI.stations[i].y + 0.5;
 		ALLEGRO_COLOR color = al_map_rgb(  0,  0,155);	/* B  */
 
-		al_draw_filled_rectangle(
+		if (GI.stations[i].ammo)
+			al_draw_filled_rectangle(
 		                        scale*(x-0.5), scale*(y-0.5),
 		                        scale*(x+0.5), scale*(y+0.5),
 		                        color);
 	}
 
-#if 0
 	/* end */
-	al_draw_filled_circle(scale * (G.gi.end[0]+0.5),
-	                      scale * (G.gi.end[1]+0.5), scale/2,
-	                      al_map_rgb(255, 0, 0));
+	al_draw_filled_circle(scale * (GI.goal_x+0.5),
+	                      scale * (GI.goal_y+0.5), scale/2,
+	                      al_map_rgb(  0,  0,255));
+#if 0
 	render_pos[0]=prev_pos[0]+(float)frame*(pos[0] - prev_pos[0])/MOVE_FRAMES;
 	render_pos[1]=prev_pos[1]+(float)frame*(pos[1] - prev_pos[1])/MOVE_FRAMES;
 #endif
@@ -71,7 +74,7 @@ static inline void gfx_render(int frame)
 
 	al_draw_filled_circle(scale * (render_pos[0]+0.5),
 			scale * (render_pos[1]+0.5), scale/2,
-			al_map_rgb(  0,  0,255));
+			al_map_rgb(255,255,  0));
 #if 0
 	al_draw_filled_circle(
 			scale * (render_pos[0]+0.8),
