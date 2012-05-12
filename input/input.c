@@ -4,7 +4,7 @@
 
 char mat[20][20];
 
-int func(int x, int y)
+int has_neighbour_wall(int x, int y)
 {
 	int vet[4][2] = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
 	int i;
@@ -45,11 +45,11 @@ int main(int argc, const char *argv[])
 			x = rand()%20;	
 			y = rand()%20;
 		}
-		while(mat[y][x] == 'R');
+		while(mat[y][x] == 'X');
 
 		j = rand()%10;
 
-		if(j) printf("Z:%d,%d,%d\n", x, y, j);
+		if(j) printf("Z:%d,%d,%d\n", x+1, y+1, j);
 	}
 
 	for (i = 0; i < 4; i++) 
@@ -59,9 +59,9 @@ int main(int argc, const char *argv[])
 			x = rand()%20;	
 			y = rand()%20;
 		}
-		while(mat[y][x] == 'X' || !func(x, y));
+		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y));
 
-		printf("H:%d,%d,%d\n", x, y, rand()%10);
+		printf("H:%d,%d,%d\n", x+1, y+1, rand()%11);
 	}
 
 	for (i = 0; i < 4; i++) 
@@ -70,11 +70,10 @@ int main(int argc, const char *argv[])
 		{
 			x = rand()%20;	
 			y = rand()%20;
-			j = rand()%100;
 		}
-		while(mat[y][x] == 'X' || !func(x, y) || j < 30);
+		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y));
 
-		printf("M:%d,%d,%d\n", x, y, j);
+		printf("M:%d,%d,%d\n", x+1, y+1, rand()%70+30);
 	}
 
 	for (i = 0; i < 20; i++) {
