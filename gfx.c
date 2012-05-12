@@ -87,7 +87,7 @@ static void draw_player(int scale)
 			0);
 }
 
-void gfx_init(int w, int h, int fps)
+void gfx_init(int w, int h, float fps)
 {
 	if (!al_init())
 		die(1, "can't init allegro");
@@ -116,9 +116,9 @@ void gfx_init(int w, int h, int fps)
 void gfx_step(void)
 {
 	int i;
-	ALLEGRO_EVENT ev;
 
 	for (i = 0; i < MOVE_FRAMES; i++) {
+		ALLEGRO_EVENT ev;
 		gfx_render(i);
 		do {
 			al_wait_for_event(GI.evQ, &ev);

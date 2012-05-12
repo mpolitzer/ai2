@@ -118,7 +118,7 @@ int game_check_border(int x, int y);
 #define die(error, ...) _die(error, __FILE__, __LINE__, __VA_ARGS__)
 void _die(int error, char* filename, int line, const char* format, ...);
 
-void gfx_init(int w, int h, int fps);
+void gfx_init(int w, int h, float fps);
 void gfx_step(void);
 
 #endif /* GAME_H */
