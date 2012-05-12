@@ -289,7 +289,7 @@ static foreign_t action_shoot(void)
 
 	int dx = dir_vect[player.direction][0];
 	int dy = dir_vect[player.direction][1];
-	int x = player.x, y = player.y;
+	int x = player.x+dx, y = player.y+dy;
 
 	if(player.ammo == 0)
 		return FALSE;

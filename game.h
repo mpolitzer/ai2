@@ -69,7 +69,11 @@ struct game_info {
 	ALLEGRO_TIMER *tick;
 	ALLEGRO_EVENT_QUEUE *evQ;
 
-
+	ALLEGRO_BITMAP *zombie;
+	ALLEGRO_BITMAP *pacman;
+	ALLEGRO_BITMAP *medkit;
+	ALLEGRO_BITMAP *ammo;
+		
 };
 
 struct player {

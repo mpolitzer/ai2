@@ -1,11 +1,14 @@
 #include "game.h"
+#include <math.h>
 
 #define MOVE_FRAMES 10
+
+static void draw_player(int scale);
 
 static inline void gfx_render(int frame)
 {
 	int i;
-	int scale = 20;
+	int scale = 38;
 	float render_pos[2];
 
 	al_clear_to_color(al_map_rgb(0,0,0));
@@ -30,64 +33,62 @@ static inline void gfx_render(int frame)
 		ALLEGRO_COLOR color = al_map_rgb(255,   0,  0);	/* R  */
 
 		if (GI.hospitals[i].antidotes)
-			al_draw_filled_rectangle(
+			al_draw_scaled_bitmap(GI.medkit,
+					0, 0,
+					298,296,	/* image size. */
 					scale*(x-0.5), scale*(y-0.5),
-					scale*(x+0.5), scale*(y+0.5),
-					color);
+					scale, scale,
+					0);
 	}
+
+	/* zombies */
 	for (i=0; i<GI.num_zombies; i++) {
 		float x = GI.zombies[i].x + 0.5;
 		float y = GI.zombies[i].y + 0.5;
-		ALLEGRO_COLOR color = al_map_rgb(  0,155,  0);	/* G  */
-		
+
 		if (GI.zombies[i].num)
-			al_draw_filled_rectangle(
+			al_draw_scaled_bitmap(GI.zombie,
+					0, 0,
+					133, 124,	/* image size. */
 					scale*(x-0.5), scale*(y-0.5),
-					scale*(x+0.5), scale*(y+0.5),
-					color);
+					scale, scale,
+					0);
 	}
+
+	/* stations */
 	for (i=0; i<GI.num_stations; i++) {
 		float x = GI.stations[i].x + 0.5;
 		float y = GI.stations[i].y + 0.5;
 		ALLEGRO_COLOR color = al_map_rgb(  0,  0,155);	/* B  */
 
 		if (GI.stations[i].ammo)
-			al_draw_filled_rectangle(
-		                        scale*(x-0.5), scale*(y-0.5),
-		                        scale*(x+0.5), scale*(y+0.5),
-		                        color);
+			al_draw_scaled_bitmap(GI.ammo,
+					0, 0,
+					423, 336,	/* image size. */
+					scale*(x-0.5), scale*(y-0.5),
+					scale, scale,
+					0);
 	}
 
 	/* end */
 	al_draw_filled_circle(scale * (GI.goal_x+0.5),
 	                      scale * (GI.goal_y+0.5), scale/2,
 	                      al_map_rgb(  0,  0,255));
-#if 0
-	render_pos[0]=prev_pos[0]+(float)frame*(pos[0] - prev_pos[0])/MOVE_FRAMES;
-	render_pos[1]=prev_pos[1]+(float)frame*(pos[1] - prev_pos[1])/MOVE_FRAMES;
-#endif
-
-	render_pos[0] = player.x;
-	render_pos[1] = player.y;
-
-	/* player */
-
-	al_draw_filled_circle(scale * (render_pos[0]+0.5),
-			scale * (render_pos[1]+0.5), scale/2,
-			al_map_rgb(255,255,  0));
-#if 0
-	al_draw_filled_circle(
-			scale * (render_pos[0]+0.8),
-			scale * (render_pos[1]+0.3), scale/6,
-			al_map_rgb(  0,255,  0));
-	al_draw_filled_circle(
-			scale * (render_pos[0]+0.8),
-			scale * (render_pos[1]+0.8), scale/6,
-			al_map_rgb(  0,255,  0));
-#endif
+	draw_player(scale);
 	al_flip_display();
 }
 
+static void draw_player(int scale)
+{
+	int x = player.x, y = player.y;
+
+	al_draw_scaled_rotated_bitmap(GI.pacman,
+			541.0/2, 600.0/2,
+			scale*(x+0.5), scale*(y+0.5),
+			scale/541.0, scale/600.0,
+			player.direction*(M_PI/2)-M_PI/2,
+			0);
+}
 
 void gfx_init(int w, int h, int fps)
 {
@@ -101,7 +102,13 @@ void gfx_init(int w, int h, int fps)
 		die(4, "can't create event queue");
 	if (!(GI.tick = al_create_timer(1.0 / (fps*MOVE_FRAMES))))
 		die(5, "tick died, invalid fps");
+	if (!al_init_image_addon())
+		die(6, "failed to load image addon");
 
+	GI.medkit = al_load_bitmap("images/medkit.png");
+	GI.pacman = al_load_bitmap("images/pacman.png");
+	GI.zombie = al_load_bitmap("images/zombie.png");
+	GI.ammo = al_load_bitmap("images/ammo.png");
 	/* current position is the begining */
 
 	al_register_event_source(GI.evQ, al_get_display_event_source(GI.display));
