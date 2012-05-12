@@ -236,11 +236,13 @@ static foreign_t action_move_forward(void)
 	int y = player.y + dir_vect[player.direction][1];
 	struct resources_map *rm = &GI.resources_map[y][x];
 
+
 	if(!game_check_border(x, y))
 		return FALSE;
 
-	if(GI.map[y][x] == MAP_WALL && rm->what == IS_NOTHING)
-		return FALSE;
+	if(GI.goal_x != x || GI.goal_y != y)
+		if(GI.map[y][x] == MAP_WALL && rm->what == IS_NOTHING)
+			return FALSE;
 
 	player.x = x;
 	player.y = y;
