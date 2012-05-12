@@ -48,7 +48,6 @@ int main(int argc, const char *argv[])
 		while(mat[y][x] == 'X');
 
 		j = rand()%10;
-
 		if(j) printf("Z:%d,%d,%d\n", x+1, y+1, j);
 	}
 
@@ -61,7 +60,8 @@ int main(int argc, const char *argv[])
 		}
 		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y));
 
-		printf("H:%d,%d,%d\n", x+1, y+1, rand()%11);
+		j = rand()%11;
+		if(j) printf("H:%d,%d,%d\n", x+1, y+1, j);
 	}
 
 	for (i = 0; i < 4; i++) 
@@ -73,7 +73,8 @@ int main(int argc, const char *argv[])
 		}
 		while(mat[y][x] == 'R' || !has_neighbour_wall(x, y));
 
-		printf("M:%d,%d,%d\n", x+1, y+1, rand()%70+30);
+		j = rand()%70+30;
+		printf("M:%d,%d,%d\n", x+1, y+1, j);
 	}
 
 	for (i = 0; i < 20; i++) {
