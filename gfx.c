@@ -23,16 +23,39 @@ static inline void gfx_render(int frame)
 		}
 	}
 
-#if 0
-	/* prize */
-	for (i=0; i<G.gi.num_prizes; i++) {
-		float x = G.gi.prizes[i][0] + 0.5;
-		float y = G.gi.prizes[i][1] + 0.5;
-		al_draw_filled_triangle(scale*(x), scale*(y-0.3),
-		                        scale*(x+0.3), scale*(y+0.3),
-		                        scale*(x-0.3), scale*(y+0.3),
-		                        al_map_rgb(255, 255, 0));
+	/* hospitals */
+	for (i=0; i<GI.num_hospitals; i++) {
+		float x = GI.hospitals[i].x + 0.5;
+		float y = GI.hospitals[i].y + 0.5;
+		ALLEGRO_COLOR color = al_map_rgb(255,   0,  0);	/* R  */
+
+		al_draw_filled_rectangle(
+		                        scale*(x-0.5), scale*(y-0.5),
+		                        scale*(x+0.5), scale*(y+0.5),
+		                        color);
 	}
+	for (i=0; i<GI.num_zombies; i++) {
+		float x = GI.zombies[i].x + 0.5;
+		float y = GI.zombies[i].y + 0.5;
+		ALLEGRO_COLOR color = al_map_rgb(  0,155,  0);	/* G  */
+
+		al_draw_filled_rectangle(
+		                        scale*(x-0.5), scale*(y-0.5),
+		                        scale*(x+0.5), scale*(y+0.5),
+		                        color);
+	}
+	for (i=0; i<GI.num_stations; i++) {
+		float x = GI.stations[i].x + 0.5;
+		float y = GI.stations[i].y + 0.5;
+		ALLEGRO_COLOR color = al_map_rgb(  0,  0,155);	/* B  */
+
+		al_draw_filled_rectangle(
+		                        scale*(x-0.5), scale*(y-0.5),
+		                        scale*(x+0.5), scale*(y+0.5),
+		                        color);
+	}
+
+#if 0
 	/* end */
 	al_draw_filled_circle(scale * (G.gi.end[0]+0.5),
 	                      scale * (G.gi.end[1]+0.5), scale/2,
@@ -45,9 +68,20 @@ static inline void gfx_render(int frame)
 	render_pos[1] = player.y;
 
 	/* player */
+
 	al_draw_filled_circle(scale * (render_pos[0]+0.5),
 			scale * (render_pos[1]+0.5), scale/2,
 			al_map_rgb(  0,  0,255));
+#if 0
+	al_draw_filled_circle(
+			scale * (render_pos[0]+0.8),
+			scale * (render_pos[1]+0.3), scale/6,
+			al_map_rgb(  0,255,  0));
+	al_draw_filled_circle(
+			scale * (render_pos[0]+0.8),
+			scale * (render_pos[1]+0.8), scale/6,
+			al_map_rgb(  0,255,  0));
+#endif
 	al_flip_display();
 }
 
