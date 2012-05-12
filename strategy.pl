@@ -47,10 +47,34 @@ next_position(X,Y) :-
 	Y is OldY+DY.
 
 turn_to(D) :-
-	(consult_direction(OldD),
-	not(D = OldD),
+	(
+		consult_direction(OldD),
+		not(D = OldD),
+		action_turn_right,
+		turn_to(D)
+	);
+	true.
+
+% ----------------------------------- %
+
+move_to_resource :-
+	next_position(X,Y),
+	(
+		not(is_wall(X,Y));
+		is_border(X,Y)
+	),
 	action_turn_right,
-	turn_to(D));true.
+	move_to_resource.
+
+move_to_resource :-
+	next_position(X,Y),
+	(
+		(
+			not(action_move_forward),
+			move_to_resource
+		);
+		action_grab
+	).
 
 % ----------------------------------- %
 
@@ -62,7 +86,11 @@ strategy :-
 	action_turn_chopper_on.
 
 strategy :-
-       true.	
+	(
+		sense_station;
+		sense_hospital
+	),
+	move_to_resource.
 
 % ----------------------------------- %
 
