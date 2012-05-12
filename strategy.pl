@@ -15,11 +15,15 @@
 %consult_goal
 
 f :- action_move_forward.
-l :- action_turn_right.
+r :- action_turn_right.
+l :-	action_turn_right,
+	action_turn_right,
+	action_turn_right.
 g :- action_grab.
 s :- action_shoot.
 ua :- action_use_antidote.
 on :- action_turn_chopper_on.
+sz(N) :- sense_zombies(N).
 
 % ----------------------------------- %
 
