@@ -6,14 +6,14 @@
 %sense_antidote
 %sense_ammo
 %sense_hit
-%                      
+%
 %consult_antidotes
 %consult_ammo
 %consult_bites
 %consult_position
 %consult_direction
 %consult_goal
-                      
+
 f :- action_move_forward.
 l :- action_turn_right.
 g :- action_grab.
@@ -23,11 +23,11 @@ on :- action_turn_chopper_on.
 
 % ----------------------------------- %
 
-:- dynamic 
-	has_zombie/3, 
-	curr_position/2, 
-	has_antidote/2, 
-	has_ammo/2, 
+:- dynamic
+	has_zombie/3,
+	curr_position/2,
+	has_antidote/2,
+	has_ammo/2,
 	safe_tile/2.
 
 % ----------------------------------- %
@@ -55,7 +55,7 @@ load_sense_hospital :-
 	true.
 
 load_sense_antidote :-
-	sense_antidote,
+	sense_antidote(A),
 	curr_position(X,Y),
 	has_antidote(X,Y).
 
@@ -68,11 +68,11 @@ load_sense_hit :-
 	true.
 
 init_sensors :-
-	load_sense_zombies,
-	load_sense_station,
-	load_sense_hospital,
-	load_sense_antidote,
-	load_sense_ammo,
+	load_sense_zombies;
+	load_sense_station;
+	load_sense_hospital;
+	load_sense_antidote;
+	load_sense_ammo;
 	load_sense_hit.
 
 % ----------------------------------- %
@@ -90,5 +90,4 @@ strategy :-
 	logic.
 
 % ----------------------------------- %
-
 
