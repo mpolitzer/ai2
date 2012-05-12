@@ -26,6 +26,7 @@ static foreign_t consult_position(term_t X,term_t Y);
 static foreign_t consult_direction(term_t Direction);
 static foreign_t consult_goal(term_t X,term_t Y);
 static foreign_t consult_points(term_t num);
+static foreign_t consult_is_wall(term_t X, term_t Y);
 
 static foreign_t action_move_forward(void);
 static foreign_t action_turn_right(void);
@@ -210,6 +211,20 @@ static foreign_t consult_points(term_t t0)
 	return PL_unify_integer(t0, player.points);
 }
 
+static foreign_t consult_is_wall(term_t X, term_t Y)
+{
+	int x, y;
+	PL_get_integer(X, &x); 
+	PL_get_integer(Y, &y); 
+
+	if(!game_check_border(x-1,y-1))
+		return TRUE;
+
+	if(GI.map[y-1][x-1] == MAP_WALL)
+		return TRUE;
+
+	return FALSE;
+}
 
 /* -------------------------------------------------------------------------- */
 /*                                ACTION                                      */
@@ -346,6 +361,8 @@ static foreign_t action_turn_chopper_on(void)
 	game_update_points(ACTION_TURN_CHOPPER_ON);
 	game_update_points(ACTION_FUCK_YEAH);
 
+	GI.chopper_on = 1;
+
 	/* TODO: acaba a execucao */
 	return TRUE;
 }
@@ -370,6 +387,7 @@ void register_binds(void)
 	PL_register_foreign("consult_direction", 1, consult_direction, 0);
 	PL_register_foreign("consult_goal", 2, consult_goal, 0);
 	PL_register_foreign("consult_points", 1, consult_points, 0);
+	PL_register_foreign("is_wall", 2, consult_is_wall, 0);
 
 	PL_register_foreign("action_move_forward", 0, action_move_forward, 0);
 	PL_register_foreign("action_turn_right", 0, action_turn_right, 0);

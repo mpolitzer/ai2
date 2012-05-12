@@ -57,7 +57,7 @@ int *a_star_search(int init[2], int goal[2], float *_distance, int *_steps)
 
 	/* pointer to map_size */
 	int map_size[] = {MAPW, MAPH};
-	char *mapw = (char*)G.map;
+	char *mapw = (char*)GI.map;
 
 	/* if goal is inside a wall */
 	if (mapw[goal[0] + goal[1] * map_size[0]] < 0) {

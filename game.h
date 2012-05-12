@@ -64,6 +64,7 @@ struct game_info {
 	int goal_x, goal_y;
 
 	int was_hit;
+	int chopper_on;
 
 	ALLEGRO_DISPLAY *display;
 
@@ -89,6 +90,7 @@ struct player {
 	int direction; /* n, e, s, w, curr */
 	int ammo;
 
+#define MAX_BITES 20
 	int bites;
 	int points;
 };

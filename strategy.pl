@@ -29,69 +29,40 @@ sz(N) :- sense_zombies(N).
 
 :- dynamic
 	has_zombie/3,
-	curr_position/2,
-	has_antidote/2,
-	has_ammo/2,
-	safe_tile/2.
+	unsafe_tile/2,
+	visited/2.
 
 % ----------------------------------- %
 
-curr_position(-1,-1).
+dir_vect(n, vect(0,-1)).
+dir_vect(e, vect(1,0)).
+dir_vect(s, vect(0,1)).
+dir_vect(w, vect(-1,0)).
 
-load_position :-
-	consult_position(X,Y),
-	retract(curr_position(_,_)),
-	assert(curr_position(X,Y)),
-	assert(safe_tile(X,Y)).
+next_position(X,Y) :-
+	consult_position(OldX,OldY),
+	consult_direction(D),
+	dir_vect(D, vect(DX,DY)),
+	X is OldX+DX,
+	Y is OldY+DY.
 
-% ----------------------------------- %
-
-load_sense_zombies :-
-	sense_zombies(N),
-	true.
-	
-load_sense_station :-
-	sense_station,
-	true.
-
-load_sense_hospital :-
-	sense_hospital,
-	true.
-
-load_sense_antidote :-
-	sense_antidote(A),
-	curr_position(X,Y),
-	has_antidote(X,Y).
-
-load_sense_ammo :-
-	sense_ammo(N),
-	curr_position(X,Y),
-	has_ammo(coord(X,Y), N).
-
-load_sense_hit :-
-	true.
-
-init_sensors :-
-	load_sense_zombies;
-	load_sense_station;
-	load_sense_hospital;
-	load_sense_antidote;
-	load_sense_ammo;
-	load_sense_hit.
-
-% ----------------------------------- %
-
-logic :-
-	load_position,
-	init_sensors,
-	true.
+turn_to(D) :-
+	(consult_direction(OldD),
+	not(D = OldD),
+	action_turn_right,
+	turn_to(D));true.
 
 % ----------------------------------- %
 
 strategy :-
-	load_position,
-	init_sensors,
-	logic.
+	consult_position(X,Y),
+	consult_goal(GX,GY),
+	X = GX,
+	Y = GY,
+	action_turn_chopper_on.
+
+strategy :-
+       true.	
 
 % ----------------------------------- %
 

@@ -55,8 +55,24 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	call_strategy();
-	gfx_step();
+	do
+	{
+		call_strategy();
+		gfx_step();
+
+		if(GI.chopper_on) 
+		{
+			printf("Congrats! Points: %d.\n", player.points);
+			break;
+		}
+
+		if(player.bites > MAX_BITES)
+		{
+			printf("YOU LOSE!\n");
+			break;
+		}
+	} while(0);
+
 	PL_halt(PL_toplevel() ? 0 : 1);
 	return 0;
 }

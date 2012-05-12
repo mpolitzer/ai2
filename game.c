@@ -118,15 +118,15 @@ int game_check_border(int x, int y)
 void game_update_points(int action)
 {
 	int points_vet[] = {-1, -1, -1, -10, -1, -100, 20, 200};
-	int factor = 0;
+	int factor = 1;
 
 	if(action == ACTION_FUCK_YEAH)
 	{
-		factor += player.antidotes;
+		factor = player.antidotes;
 	}
-	else
+	else if(points_vet[action] < 0)
 	{
-		factor += player.bites+1;
+		factor += player.bites;
 	}
 	
 	player.points += points_vet[action] * factor;
