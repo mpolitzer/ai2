@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 			printf("YOU LOSE!\n");
 			break;
 		}
-	} while(0);
+	} while(1);
 
 	PL_halt(PL_toplevel() ? 0 : 1);
 	return 0;

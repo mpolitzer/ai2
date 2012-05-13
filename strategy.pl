@@ -110,14 +110,15 @@ has_unvis(D) :-
 	not(is_border(NX,NY)),
 	not(visited(NX,NY)).
 
-visited_list([3], [3]).
+visited_list([], []).
 
 move_forward :-
+	consult_position(OldX,OldY),
 	next_position(X,Y),
 	action_move_forward,
 	assert(visited(X,Y)),
 	retract(visited_list(LX, LY)),
-	assert(visited_list([X|LX],[Y|LY])).
+	assert(visited_list([OldX|LX],[OldY|LY])).
 
 % ----------------------------------- %
 
@@ -168,9 +169,14 @@ strategy :-
 	assert(visited_list(LX,LY)),
 	consult_position(CurrX, CurrY),
 	DX is X-CurrX, DY is Y-CurrY,
+	abs(DX,AX),
+	abs(DY,AY),
+	assertion(AX < 2),
+	assertion(AY < 2),
+	assertion(AX > 0;AY > 0),
 	dir_vect(D,vect(DX,DY)),
 	turn_to(D),
-	move_forward.
+	action_move_forward.
  
 strategy :-
 	next_position(X,Y),
