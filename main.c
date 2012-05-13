@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	FILE *f = fopen("in.txt", "r");
 	ALLEGRO_EVENT ev;
 
-	gfx_init(760, 760, 1);
+	gfx_init(760, 760, 5);
 	game_init();
 	game_read(f);
 
@@ -58,7 +58,6 @@ int main(int argc, char *argv[])
 	do
 	{
 		call_strategy();
-		gfx_step();
 
 		if(GI.chopper_on) 
 		{

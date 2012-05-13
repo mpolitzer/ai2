@@ -250,16 +250,12 @@ static foreign_t action_move_forward(void)
 	struct resources_map *rm = &GI.resources_map[y][x];
 
 
-	if(!game_check_border(x, y)) {
-		gfx_step();
+	if(!game_check_border(x, y))
 		return FALSE;
-	}
 
 	if(GI.goal_x != x || GI.goal_y != y)
-		if(GI.map[y][x] == MAP_WALL && rm->what == IS_NOTHING){
-			gfx_step();
+		if(GI.map[y][x] == MAP_WALL && rm->what == IS_NOTHING)
 			return FALSE;
-		}
 
 	player.x = x;
 	player.y = y;
@@ -314,7 +310,6 @@ static foreign_t action_grab(void)
 		return TRUE;
 	}
 	
-	gfx_step();
 	return FALSE;
 }
 
@@ -326,10 +321,8 @@ static foreign_t action_shoot(void)
 	int dy = dir_vect[player.direction][1];
 	int x = player.x+dx, y = player.y+dy;
 
-	if(player.ammo == 0) {
-		gfx_step();
+	if(player.ammo == 0)
 		return FALSE;
-	}
 	player.ammo--;
 
 	game_update_points(ACTION_SHOOT);
@@ -351,6 +344,7 @@ static foreign_t action_shoot(void)
 			GI.was_hit = 1;
 	
 			game_update_points(ACTION_KILL_ZOMBIE);
+			printf("Pow! %d bullets left!\n", player.ammo);
 			gfx_step();
 			return TRUE;
 		}
@@ -358,8 +352,7 @@ static foreign_t action_shoot(void)
 		x += dx;
 		y += dy;
 	}
-
-	gfx_step();
+	printf("Fiiiiuuuuuuuu... missed shot!\n");
 	return FALSE;
 }
 
@@ -370,19 +363,17 @@ static foreign_t action_use_antidote(void)
 		player.antidotes--;
 		player.bites = 0;
 
+		printf("Aaaahhhhhh... %d antidotes left!\n", player.antidotes);
 		gfx_step();
 		return TRUE;
 	}
-	gfx_step();
 	return FALSE;
 }
 
 static foreign_t action_turn_chopper_on(void)
 {
-	if(GI.goal_x != player.x || GI.goal_y != player.y) {
-		gfx_step();
+	if(GI.goal_x != player.x || GI.goal_y != player.y)
 		return FALSE;
-	}
 
 	game_update_points(ACTION_TURN_CHOPPER_ON);
 	game_update_points(ACTION_FUCK_YEAH);
@@ -390,7 +381,6 @@ static foreign_t action_turn_chopper_on(void)
 	GI.chopper_on = 1;
 
 	/* TODO: acaba a execucao */
-	gfx_step();
 	return TRUE;
 }
 
