@@ -50,6 +50,12 @@ next_position(X,Y) :-
 	X is OldX+DX,
 	Y is OldY+DY.
 
+next_position_d(X, Y, D) :-
+	consult_position(OldX,OldY),
+	dir_vect(D, vect(DX,DY)),
+	X is OldX+DX,
+	Y is OldY+DY.
+
 turn_to(D) :-
 	(
 		consult_direction(OldD),
@@ -122,22 +128,53 @@ move_forward :-
 
 % ----------------------------------- %
 
-vect_to_dir(X, Y, D) :-
+vect_to_dir(X, Y, D1, D2) :-
 	abs(Y,AY),
 	X > AY,
-	D = e.
-vect_to_dir(X, Y, D) :-
+	D1 = e,
+	(
+		(
+			Y > 0,
+			D2 = s
+		);
+		D2 = n
+	).
+vect_to_dir(X, Y, D1, D2) :-
 	abs(Y,AY),
 	-X > AY,
-	D = w.
-vect_to_dir(X, Y, D) :-
+	D1 = w,
+	(
+		(
+			Y > 0,
+			D2 = s
+		);
+		D2 = n
+	).
+
+vect_to_dir(X, Y, D1, D2) :-
 	abs(X,AX),
 	Y > AX,
-	D = s.
-vect_to_dir(X, Y, D) :-
+	D1 = s,
+	(
+		(
+			X > 0,
+			D2 = e
+		);
+		D2 = w
+	).
+
+vect_to_dir(X, Y, D1, D2) :-
 	abs(X,AX),
 	-Y > AX,
-	D = n.
+	D1 = n,
+	(
+		(
+			X > 0,
+			D2 = e
+		);
+		D2 = w
+	).
+
 
 % ----------------------------------- %
 
@@ -196,16 +233,30 @@ strategy :-
 	dir_vect(D,vect(DX,DY)),
 	turn_to(D),
 	action_move_forward.
-%  
-% strategy :-
-% 	consult_position(CurrX, CurrY),
-% 	consult_goal(GoalX, GoalY),
-% 	DX is GoalX-CurrX,
-% 	DY is GoalY-CurrY,
-% 	vect_to_dir(DX,DY,D),
-% 	turn_to(D),
-% 	move_forward.
-% 
+ 
+strategy :-
+	consult_position(CurrX, CurrY),
+	consult_goal(GoalX, GoalY),
+	DX is GoalX-CurrX,
+	DY is GoalY-CurrY,
+	vect_to_dir(DX,DY,D1,D2),
+	(
+		(
+			next_position_d(X,Y,D1),
+			not(is_wall(X,Y)),
+			not(is_border(X,Y)),
+			not(visited(X,Y)),
+			turn_to(D1)
+		);(
+			next_position_d(X,Y,D2),
+			not(is_wall(X,Y)),
+			not(is_border(X,Y)),
+			not(visited(X,Y)),
+			turn_to(D2)
+		)
+	),
+	move_forward.
+
 strategy :-
 	next_position(X,Y),
 	(

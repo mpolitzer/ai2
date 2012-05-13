@@ -35,7 +35,7 @@ int call_strategy()
 
 int main(int argc, char *argv[])
 {
-	FILE *f = fopen("in2.txt", "r");
+	FILE *f = fopen("in.txt", "r");
 	ALLEGRO_EVENT ev;
 
 	gfx_init(760, 760, 10);
