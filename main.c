@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	FILE *f = fopen("in.txt", "r");
 	ALLEGRO_EVENT ev;
 
-	gfx_init(760, 760, 10);
+	gfx_init(760, 760, 5);
 	game_init();
 	game_read(f);
 

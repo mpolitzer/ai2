@@ -32,7 +32,7 @@ st(N) :- strategy,X is N-1,st(X).
 
 :- dynamic
 	has_zombie/3,
-	unsafe_tile/2,
+	safe_tile/2,
 	visited/2,
 	visited_list/2.
 
@@ -89,22 +89,15 @@ move_to_resource :-
 
 % ----------------------------------- %
 
-% dfs(XI, YI, XG, YG, SolX, SolY) :-
-% 	retract(dfs_visited(_,_)),
-% 	dfs_loop.
-% 
-% dfs_loop(XI, YI, XG, YG, [XI], [YI]) :- XI = XG, YI = YG.
-% dfs_loop(XI, YI, XG, YG, [XI | SolX], [YI | SolY]):- 
-% 	s(XI, YI, Xt, Yt), dfs_loop(Xt, Yt, XG, YG, SolX, SolY).
-% 
-% s(X1, Y1, X2, Y2) :-
-% 	dir_vect(_, vect(DX,DY)),
-% 	X2 is X1+DX,
-% 	Y2 is Y1+DY,
-% 	not(dfs_visited(X2,Y2)),
-% 	not(is_wall(X2,Y2)),
-% 	not(is_border(X2,Y2)),
-% 	assert(dfs_visited(X2,Y2)).
+set_safe_tiles :-
+	(consult_position(X,Y),
+	dir_vect(_,vect(DX,DY)),
+	NX is X+DX,
+	NY is Y+DY,
+	not(is_wall(NX,NY)),
+	not(is_border(NX,NY)),
+	not(sense_zombies(_)),
+	assert(safe_tile(NX,NY)));true.
 
 % ----------------------------------- %
 
@@ -124,7 +117,8 @@ move_forward :-
 	action_move_forward,
 	assert(visited(X,Y)),
 	retract(visited_list(LX, LY)),
-	assert(visited_list([OldX|LX],[OldY|LY])).
+	assert(visited_list([OldX|LX],[OldY|LY])),
+	set_safe_tiles.
 
 % ----------------------------------- %
 
@@ -178,6 +172,21 @@ vect_to_dir(X, Y, D1, D2) :-
 
 % ----------------------------------- %
 
+mark_safe_by_shoot(X,Y) :-
+	is_wall(X,Y);
+	is_border(X,Y).
+
+mark_safe_by_shoot(XI,YI) :-
+	consult_direction(D),
+	dir_vect(D,DX,DY),
+	X is XI+DX,
+	Y is YI+DY,
+	assert(safe_tile(X,Y)),
+	mark_safe_by_shoot(X, Y).
+
+% ----------------------------------- %
+
+
 strategy :-
 	consult_position(X,Y),
 	consult_goal(GX,GY),
@@ -205,22 +214,36 @@ strategy :-
 	N > 0,
 	action_use_antidote.
 
+
+strategy :-
+	sense_zombies(N),
+	safe_tile(_,_),
+	dfs.
+
 strategy :-
 	sense_zombies(N),
 	next_position(X,Y),
 	not(is_wall(X,Y)),
-	action_shoot,
-	(
+	((
+		action_shoot,
 		(
-			sense_zombies(NN),
-			NN = N,
-			move_forward
-		);
-		true
-	).
+			(
+				sense_zombies(NN),
+				NN = N,
+				move_forward
+			);
+			true
+		)
+	);(
+		not(sense_hit),
+		mark_safe_by_shoot(X,Y)
+	)).
 
 strategy :-
 	not(has_unvis(_)),
+	dfs.
+
+dfs :-
 	retract(visited_list([X|LX], [Y|LY])),
 	assert(visited_list(LX,LY)),
 	consult_position(CurrX, CurrY),
@@ -233,7 +256,7 @@ strategy :-
 	dir_vect(D,vect(DX,DY)),
 	turn_to(D),
 	action_move_forward.
- 
+
 strategy :-
 	consult_position(CurrX, CurrY),
 	consult_goal(GoalX, GoalY),
@@ -248,14 +271,14 @@ strategy :-
 			not(visited(X,Y)),
 			turn_to(D1)
 		);(
-			next_position_d(X,Y,D2),
-			not(is_wall(X,Y)),
-			not(is_border(X,Y)),
-			not(visited(X,Y)),
-			turn_to(D2)
-		)
-	),
-	move_forward.
+		next_position_d(X,Y,D2),
+		not(is_wall(X,Y)),
+		not(is_border(X,Y)),
+		not(visited(X,Y)),
+		turn_to(D2)
+	)
+),
+move_forward.
 
 strategy :-
 	next_position(X,Y),
