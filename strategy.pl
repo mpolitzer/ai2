@@ -106,9 +106,9 @@ has_unvis(D) :-
 	consult_position(X,Y),
 	dir_vect(D,vect(DX,DY)),
 	NX is X+DX, NY is Y+DY,
-	not(visited(NX,NY)),
 	not(is_wall(NX,NY)),
-	not(is_border(NX,NY)).
+	not(is_border(NX,NY)),
+	not(visited(NX,NY)).
 
 visited_list([3], [3]).
 
@@ -171,12 +171,7 @@ strategy :-
 	dir_vect(D,vect(DX,DY)),
 	turn_to(D),
 	move_forward.
-% 
-% strategy :-
-% 	has_unvis(D),
-% 	turn_to(D),
-% 	move_forward.
-% 
+ 
 strategy :-
 	next_position(X,Y),
 	(
