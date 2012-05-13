@@ -31,7 +31,7 @@ sz(N) :- sense_zombies(N).
 	has_zombie/3,
 	unsafe_tile/2,
 	visited/2,
-	dfs_visited/2.
+	dfs_visited/2,
 	visited_list/2.
 
 % ----------------------------------- %
