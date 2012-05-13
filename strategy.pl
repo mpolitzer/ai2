@@ -186,6 +186,13 @@ strategy :-
 	action_turn_chopper_on.
 
 strategy :-
+	(
+		sense_station;
+		sense_hospital
+	),
+	move_to_resource.
+
+strategy :-
 	consult_position(X,Y),
 	consult_goal(GX,GY),
 	DX is GX-X, DY is GY-Y,
@@ -197,13 +204,6 @@ strategy :-
 	consult_bites(N),
 	N > 0,
 	action_use_antidote.
-
-strategy :-
-	(
-		sense_station;
-		sense_hospital
-	),
-	move_to_resource.
 
 strategy :-
 	sense_zombies(N),
