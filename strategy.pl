@@ -73,6 +73,7 @@ move_to_resource :-
 	(
 		(
 			not(move_forward),
+			action_turn_right,
 			move_to_resource
 		);
 		action_grab
@@ -126,6 +127,14 @@ strategy :-
 	action_turn_chopper_on.
 
 strategy :-
+	consult_position(X,Y),
+	consult_goal(GX,GY),
+	DX is GX-X, DY is GY-Y,
+	dir_vect(D,vect(DX,DY)),
+	turn_to(D),
+	move_forward.
+
+strategy :-
 	consult_bites(N),
 	N > 0,
 	action_use_antidote.
@@ -141,7 +150,25 @@ strategy :-
 	sense_zombies(N),
 	next_position(X,Y),
 	not(is_wall(X,Y)),
-	action_shoot.
+	action_shoot,
+	(
+		(
+			sense_zombies(NN),
+			NN = N,
+			move_forward
+		);
+		true
+	).
+
+strategy :-
+	not(has_unvis(_)),
+	retract(visited_list([X|LX], [Y|LY])),
+	assert(visited_list(LX,LY)),
+	consult_position(CurrX, CurrY),
+	DX is X-CurrX, DY is Y-CurrY,
+	dir_vect(D,vect(DX,DY)),
+	turn_to(D),
+	move_forward.
 
 strategy :-
 	next_position(X,Y),

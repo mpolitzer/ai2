@@ -80,9 +80,9 @@ static void draw_player(int scale)
 	int x = player.x, y = player.y;
 
 	al_draw_scaled_rotated_bitmap(GI.pacman,
-			541.0/2, 600.0/2,
+			571.0/2, 571.0/2,
 			scale*(x+0.5), scale*(y+0.5),
-			scale/541.0, scale/600.0,
+			scale/571.0, scale/571.0,
 			player.direction*(M_PI/2)-M_PI/2,
 			0);
 }

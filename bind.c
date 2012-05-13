@@ -379,6 +379,7 @@ static foreign_t action_turn_chopper_on(void)
 	game_update_points(ACTION_FUCK_YEAH);
 
 	GI.chopper_on = 1;
+	printf("Congrats! Points: %d.\n", player.points);
 
 	/* TODO: acaba a execucao */
 	return TRUE;
