@@ -122,6 +122,25 @@ move_forward :-
 
 % ----------------------------------- %
 
+vect_to_dir(X, Y, D) :-
+	abs(Y,AY),
+	X > AY,
+	D = e.
+vect_to_dir(X, Y, D) :-
+	abs(Y,AY),
+	-X > AY,
+	D = w.
+vect_to_dir(X, Y, D) :-
+	abs(X,AX),
+	Y > AX,
+	D = s.
+vect_to_dir(X, Y, D) :-
+	abs(X,AX),
+	-Y > AX,
+	D = n.
+
+% ----------------------------------- %
+
 strategy :-
 	consult_position(X,Y),
 	consult_goal(GX,GY),
@@ -177,7 +196,16 @@ strategy :-
 	dir_vect(D,vect(DX,DY)),
 	turn_to(D),
 	action_move_forward.
- 
+%  
+% strategy :-
+% 	consult_position(CurrX, CurrY),
+% 	consult_goal(GoalX, GoalY),
+% 	DX is GoalX-CurrX,
+% 	DY is GoalY-CurrY,
+% 	vect_to_dir(DX,DY,D),
+% 	turn_to(D),
+% 	move_forward.
+% 
 strategy :-
 	next_position(X,Y),
 	(
