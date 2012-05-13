@@ -25,13 +25,15 @@ ua :- action_use_antidote.
 on :- action_turn_chopper_on.
 sz(N) :- sense_zombies(N).
 
+st(N) :- N = 0.
+st(N) :- strategy,X is N-1,st(X).
+
 % ----------------------------------- %
 
 :- dynamic
 	has_zombie/3,
 	unsafe_tile/2,
 	visited/2,
-	dfs_visited/2,
 	visited_list/2.
 
 % ----------------------------------- %
@@ -169,7 +171,12 @@ strategy :-
 	dir_vect(D,vect(DX,DY)),
 	turn_to(D),
 	move_forward.
-
+% 
+% strategy :-
+% 	has_unvis(D),
+% 	turn_to(D),
+% 	move_forward.
+% 
 strategy :-
 	next_position(X,Y),
 	(
@@ -182,6 +189,7 @@ strategy :-
 strategy :-
 	next_position(X,Y),
 	not(is_wall(X,Y)),
+	not(is_border(X,Y)),
 	move_forward.
 
 % ----------------------------------- %
