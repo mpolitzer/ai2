@@ -35,10 +35,10 @@ int call_strategy()
 
 int main(int argc, char *argv[])
 {
-	FILE *f = fopen("in.txt", "r");
+	FILE *f = fopen("input/input_presentation.in", "r");
 	ALLEGRO_EVENT ev;
 
-	gfx_init(760, 760, 10);
+	gfx_init(760, 760, 5);
 	game_init();
 	game_read(f);
 

@@ -30,6 +30,7 @@ int main(int argc, const char *argv[])
 	int i,j, x, y;
 
 	srand ( time(NULL) );
+	user[17][18] = 1;
 
 	for(i = 0; i < 20; i++)
 	{
@@ -45,11 +46,11 @@ int main(int argc, const char *argv[])
 		{
 			x = rand()%20;	
 			y = rand()%20;
+			j = rand()%10;
 		}
-		while(mat[y][x] == 'X' || used[y][x]);
+		while(mat[y][x] == 'X' || used[y][x] || j == 0);
 
 		used[y][x] = 1;
-		j = rand()%10;
 		if(j) printf("Z:%d,%d,%d\n", x+1, y+1, j);
 	}
 

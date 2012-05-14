@@ -249,6 +249,7 @@ static foreign_t action_move_forward(void)
 	int y = player.y + dir_vect[player.direction][1];
 	struct resources_map *rm = &GI.resources_map[y][x];
 
+	game_update_points(ACTION_WALK);
 
 	if(!game_check_border(x, y))
 		return FALSE;
@@ -259,8 +260,6 @@ static foreign_t action_move_forward(void)
 
 	player.x = x;
 	player.y = y;
-
-	game_update_points(ACTION_WALK);
 
 	if(rm->what == IS_ZOMBIE)
 	{
